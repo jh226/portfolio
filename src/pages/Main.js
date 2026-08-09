@@ -7,12 +7,14 @@ const sectionIds = ['home', 'aboutMe', 'certificates'];
 
 function Main() {
   const [currentSection, setCurrentSection] = useState(0);
+  const currentRef = useRef(0);
   const isAnimating = useRef(false);
   const touchStartY = useRef(0);
 
   const goToSection = useCallback((index) => {
     if (index < 0 || index >= sectionIds.length || isAnimating.current) return;
     isAnimating.current = true;
+    currentRef.current = index;
     setCurrentSection(index);
     window.dispatchEvent(new CustomEvent('sectionChange', { detail: sectionIds[index] }));
     setTimeout(() => { isAnimating.current = false; }, 700);
@@ -26,8 +28,9 @@ function Main() {
     const handleWheel = (e) => {
       e.preventDefault();
       if (isAnimating.current) return;
-      if (e.deltaY > 0) goToSection(currentSection + 1);
-      else if (e.deltaY < 0) goToSection(currentSection - 1);
+      const cur = currentRef.current;
+      if (e.deltaY > 0) goToSection(cur + 1);
+      else if (e.deltaY < 0) goToSection(cur - 1);
     };
 
     const handleTouchStart = (e) => {
@@ -37,8 +40,9 @@ function Main() {
     const handleTouchEnd = (e) => {
       const diff = touchStartY.current - e.changedTouches[0].clientY;
       if (Math.abs(diff) < 50) return;
-      if (diff > 0) goToSection(currentSection + 1);
-      else goToSection(currentSection - 1);
+      const cur = currentRef.current;
+      if (diff > 0) goToSection(cur + 1);
+      else goToSection(cur - 1);
     };
 
     const handleNavRequest = (e) => {
@@ -57,7 +61,7 @@ function Main() {
       window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('navRequest', handleNavRequest);
     };
-  }, [currentSection, goToSection]);
+  }, [goToSection]);
 
   return (
     <div
