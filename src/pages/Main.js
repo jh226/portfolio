@@ -1,13 +1,71 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Home from './sections/Home';
 import AboutMe from './sections/AboutMe';
 
+const sectionIds = ['home', 'aboutMe'];
+
 function Main() {
+  const [currentSection, setCurrentSection] = useState(0);
+  const isAnimating = useRef(false);
+  const touchStartY = useRef(0);
+
+  const goToSection = useCallback((index) => {
+    if (index < 0 || index >= sectionIds.length || isAnimating.current) return;
+    isAnimating.current = true;
+    setCurrentSection(index);
+    window.dispatchEvent(new CustomEvent('sectionChange', { detail: sectionIds[index] }));
+    setTimeout(() => { isAnimating.current = false; }, 700);
+  }, []);
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('sectionChange', { detail: sectionIds[0] }));
+  }, []);
+
+  useEffect(() => {
+    const handleWheel = (e) => {
+      e.preventDefault();
+      if (isAnimating.current) return;
+      if (e.deltaY > 0) goToSection(currentSection + 1);
+      else if (e.deltaY < 0) goToSection(currentSection - 1);
+    };
+
+    const handleTouchStart = (e) => {
+      touchStartY.current = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e) => {
+      const diff = touchStartY.current - e.changedTouches[0].clientY;
+      if (Math.abs(diff) < 50) return;
+      if (diff > 0) goToSection(currentSection + 1);
+      else goToSection(currentSection - 1);
+    };
+
+    const handleNavRequest = (e) => {
+      const idx = sectionIds.indexOf(e.detail);
+      if (idx !== -1) goToSection(idx);
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('navRequest', handleNavRequest);
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('navRequest', handleNavRequest);
+    };
+  }, [currentSection, goToSection]);
+
   return (
-    <>
+    <div
+      className="fullpage-slides"
+      style={{ transform: `translateY(-${currentSection * 100}vh)` }}
+    >
       <Home />
       <AboutMe />
-    </>
+    </div>
   );
 }
 

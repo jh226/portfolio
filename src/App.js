@@ -11,7 +11,7 @@ const App = () => {
 			<HashRouter>
 				<Header />
 				<DotNav />
-				<div style={{ paddingTop: '60px' }}>
+				<div className="fullpage-wrapper">
 					<Routes>
 						<Route path="/" element={<Main />} />
 						<Route path="*" element={<NotFound />} />

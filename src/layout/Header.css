@@ -2,49 +2,49 @@
   position: fixed;
   top: 0;
   width: 100%;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.0); /* 완전 투명 */
-  backdrop-filter: blur(1px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 12px 24px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0 24px;
   box-sizing: border-box;
   z-index: 999;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
-/* 메뉴 버튼들 */
-.header-menu {
-  display: flex;
-  gap: 40px;
-}
-
-/* 각각의 메뉴 아이템 */
 .header-item {
   cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 999px;               /* 완전한 pill 형태 (또는 50%도 가능) */
+  padding: 4px 14px;
+  border-radius: 6px;
   background: transparent;
-  color: #333;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+  color: #555;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  transition: background 0.2s ease, color 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .header-item:hover {
-  background: rgba(0, 0, 0, 0.1);     /* 검정색 반투명 */
+  background: rgba(0, 0, 0, 0.06);
+  color: #111;
 }
 
 @media (max-width: 768px) {
   .header {
-    height: 48px;
-    padding: 8px 16px;
+    height: 38px;
+    padding: 0 14px;
   }
 
   .header-item {
-    font-size: 14px;
-    padding: 4px 8px;
+    font-size: 12px;
+    padding: 3px 10px;
   }
 }
