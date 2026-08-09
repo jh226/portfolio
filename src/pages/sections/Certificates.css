@@ -314,3 +314,35 @@
     font-size: 8.5px;
   }
 }
+
+@media (max-width: 480px) {
+  .sticky-popup {
+    width: 180px;
+    padding: 10px 12px;
+  }
+
+  .sticky-popup strong {
+    font-size: 11px;
+  }
+
+  .sticky-popup-desc {
+    font-size: 9px;
+  }
+
+  .sticky-popup-label {
+    font-size: 9px;
+  }
+
+  .sticky-popup-section li {
+    font-size: 8.5px;
+  }
+
+  .sticky-tag {
+    font-size: 7.5px;
+    padding: 1px 5px;
+  }
+
+  .sticky-popup-github a {
+    font-size: 8px;
+  }
+}

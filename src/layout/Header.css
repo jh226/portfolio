@@ -60,3 +60,24 @@
     height: 26px;
   }
 }
+
+@media (max-width: 480px) {
+  .header {
+    height: 34px;
+    padding: 0 10px;
+  }
+
+  .header-logo {
+    font-size: 12px;
+  }
+
+  .header-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .header-icon svg {
+    width: 13px;
+    height: 13px;
+  }
+}

@@ -63,3 +63,17 @@
     font-size: 9px;
   }
 }
+
+@media (max-width: 480px) {
+  .dot-nav {
+    right: 8px;
+    gap: 8px;
+  }
+  .dot {
+    width: 5px;
+    height: 5px;
+  }
+  .dot-label {
+    font-size: 8px;
+  }
+}

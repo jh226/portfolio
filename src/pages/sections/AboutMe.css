@@ -223,3 +223,49 @@
     font-size: 9px;
   }
 }
+
+@media (max-width: 480px) {
+  .aboutMe-section {
+    padding: 0 8px;
+  }
+
+  .timeline h1 {
+    font-size: 14px;
+    top: -44px;
+    padding: 4px 8px;
+  }
+
+  .gantt-year {
+    font-size: 7px;
+  }
+
+  .gantt-bar {
+    height: 16px;
+    padding: 0 2px;
+  }
+
+  .gantt-bar-label {
+    font-size: 6px;
+  }
+
+  .gantt-rows {
+    height: 128px;
+  }
+
+  .gantt-popup {
+    width: 140px;
+    padding: 8px 10px;
+  }
+
+  .gantt-popup strong {
+    font-size: 10px;
+  }
+
+  .gantt-popup-date {
+    font-size: 8px;
+  }
+
+  .gantt-popup p {
+    font-size: 8px;
+  }
+}

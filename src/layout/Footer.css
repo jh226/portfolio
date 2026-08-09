@@ -25,3 +25,11 @@
     font-size: 12px;
   }
 }
+
+@media (max-width: 480px) {
+  .footer {
+    height: 40px;
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+}
