@@ -1,6 +1,11 @@
-import { useState, useEffect } from 'react';
-import mimoticon from '../../assets/mimoticon.png';
+import { useState, useEffect, useRef } from 'react';
+import mimo0 from '../../assets/mimoticon.png';
+import mimo1 from '../../assets/mimo1.png';
+import mimo2 from '../../assets/mimo2.png';
+import mimo3 from '../../assets/mimo3.png';
 import './Home.css';
+
+const mimoImages = [mimo0, mimo1, mimo2, mimo3];
 
 const TITLE = '안녕하세요! 개발자 이지현입니다.';
 
@@ -19,6 +24,16 @@ const stacks = [
 const Home = () => {
 	const [displayText, setDisplayText] = useState('');
 	const [typing, setTyping] = useState(false);
+	const [activeImg, setActiveImg] = useState(0);
+	const carouselTimer = useRef(null);
+
+	useEffect(() => {
+		carouselTimer.current = setInterval(() => {
+			setActiveImg((prev) => (prev + 1) % mimoImages.length);
+		}, 3000);
+		return () => clearInterval(carouselTimer.current);
+	}, []);
+
 	useEffect(() => {
 		const handleSection = (e) => {
 			if (e.detail === 'home') {
@@ -43,7 +58,24 @@ const Home = () => {
 			<div className="intro-container">
 				<div className="intro-top">
 					<div className="intro-image-wrapper">
-						<img src={mimoticon} alt="미모티콘" className="intro-image" />
+						<div className="carousel">
+							{mimoImages.map((img, i) => {
+								const total = mimoImages.length;
+								const diff = (i - activeImg + total) % total;
+								let pos = 'hidden';
+								if (diff === 0) pos = 'center';
+								else if (diff === 1) pos = 'right';
+								else if (diff === total - 1) pos = 'left';
+								return (
+									<img
+										key={i}
+										src={img}
+										alt={`미모티콘 ${i}`}
+										className={`carousel-img carousel-${pos}`}
+									/>
+								);
+							})}
+						</div>
 					</div>
 					<div className="intro-text">
 						<h2>
