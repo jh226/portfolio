@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Home from './sections/Home';
-import Certificates from './sections/Certificates';
 import AboutMe from './sections/AboutMe';
+import Certificates from './sections/Certificates';
 
-const sectionIds = ['home', 'certificates', 'aboutMe'];
+const sectionIds = ['home', 'aboutMe', 'certificates'];
 
 function Main() {
   const [currentSection, setCurrentSection] = useState(0);
@@ -65,8 +65,8 @@ function Main() {
       style={{ transform: `translateY(-${currentSection * 100}vh)` }}
     >
       <Home />
-      <Certificates />
       <AboutMe />
+      <Certificates />
     </div>
   );
 }

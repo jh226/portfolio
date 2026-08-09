@@ -3,8 +3,8 @@ import './DotNav.css';
 
 const sections = [
   { id: 'home', label: '소개' },
-  { id: 'certificates', label: '자격증' },
   { id: 'aboutMe', label: '타임라인' },
+  { id: 'certificates', label: '프로젝트' },
 ];
 
 function DotNav() {
