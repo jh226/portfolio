@@ -4,20 +4,19 @@ import AboutMe from './sections/AboutMe';
 import Certificates from './sections/Certificates';
 
 const sectionIds = ['home', 'aboutMe', 'certificates'];
+const COOLDOWN = 1000;
 
 function Main() {
   const [currentSection, setCurrentSection] = useState(0);
   const currentRef = useRef(0);
-  const isAnimating = useRef(false);
+  const lastScrollTime = useRef(0);
   const touchStartY = useRef(0);
 
   const goToSection = useCallback((index) => {
-    if (index < 0 || index >= sectionIds.length || isAnimating.current) return;
-    isAnimating.current = true;
+    if (index < 0 || index >= sectionIds.length || index === currentRef.current) return;
     currentRef.current = index;
     setCurrentSection(index);
     window.dispatchEvent(new CustomEvent('sectionChange', { detail: sectionIds[index] }));
-    setTimeout(() => { isAnimating.current = false; }, 700);
   }, []);
 
   useEffect(() => {
@@ -27,7 +26,9 @@ function Main() {
   useEffect(() => {
     const handleWheel = (e) => {
       e.preventDefault();
-      if (isAnimating.current) return;
+      const now = Date.now();
+      if (now - lastScrollTime.current < COOLDOWN) return;
+      lastScrollTime.current = now;
       const cur = currentRef.current;
       if (e.deltaY > 0) goToSection(cur + 1);
       else if (e.deltaY < 0) goToSection(cur - 1);
@@ -38,8 +39,11 @@ function Main() {
     };
 
     const handleTouchEnd = (e) => {
+      const now = Date.now();
+      if (now - lastScrollTime.current < COOLDOWN) return;
       const diff = touchStartY.current - e.changedTouches[0].clientY;
       if (Math.abs(diff) < 50) return;
+      lastScrollTime.current = now;
       const cur = currentRef.current;
       if (diff > 0) goToSection(cur + 1);
       else goToSection(cur - 1);
