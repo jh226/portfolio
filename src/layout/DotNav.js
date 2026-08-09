@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './DotNav.css';
 
-const sections = ['home', 'aboutMe', 'project'];
+const sections = [
+  { id: 'home', label: '소개' },
+  { id: 'certificates', label: '자격증' },
+  { id: 'aboutMe', label: '타임라인' },
+];
 
 function DotNav() {
   const [activeSection, setActiveSection] = useState('home');
@@ -20,12 +24,15 @@ function DotNav() {
 
   return (
     <div className="dot-nav">
-      {sections.map((id) => (
+      {sections.map(({ id, label }) => (
         <div
           key={id}
-          className={`dot ${activeSection === id ? 'active' : ''}`}
+          className={`dot-item ${activeSection === id ? 'active' : ''}`}
           onClick={() => handleClick(id)}
-        />
+        >
+          <span className="dot-label">{label}</span>
+          <div className="dot" />
+        </div>
       ))}
     </div>
   );

@@ -1,0 +1,33 @@
+.certificates-section {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 40px;
+  overflow: hidden;
+}
+
+.certificates-container {
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.certificates-container h1 {
+  border-left: 3px solid #fc11bd;
+  padding: 6px 10px;
+  font-size: 20px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 768px) {
+  .certificates-section {
+    padding: 0 12px;
+  }
+
+  .certificates-container h1 {
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+}
