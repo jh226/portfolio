@@ -1,22 +1,18 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import Home from './sections/Home';
 import AboutMe from './sections/AboutMe';
 import Certificates from './sections/Certificates';
 
 const sectionIds = ['home', 'aboutMe', 'certificates'];
-const COOLDOWN = 1000;
 
 function Main() {
-  const [currentSection, setCurrentSection] = useState(0);
-  const currentRef = useRef(0);
-  const lastScrollTime = useRef(0);
-  const touchStartY = useRef(0);
+  const containerRef = useRef(null);
+  const activeSectionRef = useRef('home');
 
-  const goToSection = useCallback((index) => {
-    if (index < 0 || index >= sectionIds.length || index === currentRef.current) return;
-    currentRef.current = index;
-    setCurrentSection(index);
-    window.dispatchEvent(new CustomEvent('sectionChange', { detail: sectionIds[index] }));
+  const emitSectionChange = useCallback((id) => {
+    if (id === activeSectionRef.current) return;
+    activeSectionRef.current = id;
+    window.dispatchEvent(new CustomEvent('sectionChange', { detail: id }));
   }, []);
 
   useEffect(() => {
@@ -24,54 +20,33 @@ function Main() {
   }, []);
 
   useEffect(() => {
-    const handleWheel = (e) => {
-      e.preventDefault();
-      const now = Date.now();
-      if (now - lastScrollTime.current < COOLDOWN) return;
-      lastScrollTime.current = now;
-      const cur = currentRef.current;
-      if (e.deltaY > 0) goToSection(cur + 1);
-      else if (e.deltaY < 0) goToSection(cur - 1);
-    };
+    const observers = [];
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) emitSectionChange(id);
+        },
+        { threshold: 0.6 }
+      );
+      observer.observe(el);
+      observers.push(observer);
+    });
+    return () => observers.forEach((o) => o.disconnect());
+  }, [emitSectionChange]);
 
-    const handleTouchStart = (e) => {
-      touchStartY.current = e.touches[0].clientY;
-    };
-
-    const handleTouchEnd = (e) => {
-      const now = Date.now();
-      if (now - lastScrollTime.current < COOLDOWN) return;
-      const diff = touchStartY.current - e.changedTouches[0].clientY;
-      if (Math.abs(diff) < 50) return;
-      lastScrollTime.current = now;
-      const cur = currentRef.current;
-      if (diff > 0) goToSection(cur + 1);
-      else goToSection(cur - 1);
-    };
-
+  useEffect(() => {
     const handleNavRequest = (e) => {
-      const idx = sectionIds.indexOf(e.detail);
-      if (idx !== -1) goToSection(idx);
+      const el = document.getElementById(e.detail);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
     window.addEventListener('navRequest', handleNavRequest);
-
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
-      window.removeEventListener('navRequest', handleNavRequest);
-    };
-  }, [goToSection]);
+    return () => window.removeEventListener('navRequest', handleNavRequest);
+  }, []);
 
   return (
-    <div
-      className="fullpage-slides"
-      style={{ transform: `translateY(-${currentSection * 100}vh)` }}
-    >
+    <div className="fullpage-slides" ref={containerRef}>
       <Home />
       <AboutMe />
       <Certificates />
