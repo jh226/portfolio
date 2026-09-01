@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import Home from './sections/Home';
+import Credentials from './sections/Credentials';
 import AboutMe from './sections/AboutMe';
 import Certificates from './sections/Certificates';
 
-const sectionIds = ['home', 'aboutMe', 'certificates'];
+const sectionIds = ['home', 'credentials', 'aboutMe', 'certificates'];
 
 function Main() {
   const containerRef = useRef(null);
@@ -48,6 +49,7 @@ function Main() {
   return (
     <div className="fullpage-slides" ref={containerRef}>
       <Home />
+      <Credentials />
       <AboutMe />
       <Certificates />
     </div>

@@ -3,6 +3,7 @@ import './DotNav.css';
 
 const sections = [
   { id: 'home', label: '소개' },
+  { id: 'credentials', label: '이력' },
   { id: 'aboutMe', label: '타임라인' },
   { id: 'certificates', label: '프로젝트' },
 ];
