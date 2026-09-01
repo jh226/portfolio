@@ -81,8 +81,9 @@ const bottomNotes = [
 		stack: 'Spring Boot, MyBatis, Python, Playwright',
 		github: '',
 		details: [
-			'80건 이상의 이슈 처리 및 QC 대응',
-			'Playwright 기반 웹 테스트 자동화 도구 개발',
+			'DLP 보안 솔루션 기능 개발 및 유지보수 (Java/Spring 기반)',
+			'신규 기능/UI 개선/기능 수정 등 약 80건의 이슈 처리 및 QC대응',
+			'Playwright 기반 웹 테스트 자동화 도구 개발 (Python, PyInstaller로 실행 파일 패키징)',
 		],
 		devDesc: [],
 	},
